@@ -1,9 +1,8 @@
 # Code Generation Agent - Prompt Chaining & Feedback Loop with Snowflake Cortex
 
-This code repository is created as part of **DAMG 7374 Gen AI w/ LLM Spring 2026 semester** - Lab session
+This code repository is created as part of **DAMG 7374 Gen AI w/ LLM Spring 2026 semester** - Lab session 
 
 A Streamlit application demonstrating two agentic patterns using multiple specialized AI models through Snowflake Cortex:
-
 1. **Prompt Chaining** - Linear sequential execution
 2. **Feedback Loop** - Iterative improvement with validation (target score: 9/10)
 
@@ -11,13 +10,13 @@ A Streamlit application demonstrating two agentic patterns using multiple specia
 
 This application creates a complete software development workflow using 5 specialized AI agents:
 
-| Agent           | Model             | Responsibility                                    |
-| --------------- | ----------------- | ------------------------------------------------- |
-| Code Generation | Claude-3.5-Sonnet | Generates & refines production-ready Python code  |
-| Test Generation | Llama4-Maverick   | Creates comprehensive pytest test suites          |
-| Requirements    | Mixtral-8x7b      | Analyzes dependencies and versions                |
-| Documentation   | Llama4-Scout      | Writes professional README files                  |
-| Validation      | Mistral-7b        | Reviews, scores, and provides actionable feedback |
+| Agent | Model | Responsibility |
+|-------|-------|----------------|
+| Code Generation | Claude-3.5-Sonnet | Generates & refines production-ready Python code |
+| Test Generation | Llama4-Maverick | Creates comprehensive pytest test suites |
+| Requirements | Mixtral-8x7b | Analyzes dependencies and versions |
+| Documentation | Llama4-Scout | Writes professional README files |
+| Validation | Mistral-7b | Reviews, scores, and provides actionable feedback |
 
 ## Agentic Patterns
 
@@ -36,7 +35,6 @@ graph LR
 ```
 
 **Characteristics:**
-
 - Single-pass execution
 - Fast execution time
 - No self-correction
@@ -56,21 +54,18 @@ graph TD
     D --> E[Docs Agent]
     E --> F[Validation Agent]
     F -->|Score < 9| G{Max Iterations?}
-    G -->|No| H[Refine Code]
-    H --> C
-    G -->|Yes| I[Output]
-    F -->|Score >= 9| I
+    G -->|No| B
+    G -->|Yes| H[Output]
+    F -->|Score >= 9| H
 ```
 
 **Characteristics:**
-
 - Iterative refinement cycles
 - Self-correcting based on feedback
 - Targets production-quality code (9/10 score)
 - Validation provides specific improvements needed
 
 **Quality Scoring Criteria:**
-
 - **9-10:** Production-ready with type hints, logging, custom exceptions, comprehensive error handling
 - **7-8:** Good code but missing best practices
 - **5-6:** Functional but needs significant improvements
@@ -107,14 +102,13 @@ Create a `.env` file in the project root:
 ```bash
 SNOWFLAKE_USER=your_username
 SNOWFLAKE_PASSWORD=your_pat_token_here
-SNOWFLAKE_ACCOUNT=your_account_identifier
+SNOWFLAKE_ACCOUNT=your_account_identifier  
 SNOWFLAKE_WAREHOUSE=COMPUTE_WH
 SNOWFLAKE_DATABASE=your_database
 SNOWFLAKE_SCHEMA=PUBLIC
 ```
 
 **Getting Your PAT Token:**
-
 1. Login to Snowflake web interface
 2. Go to your profile → "My Profile" → "Tokens" tab
 3. Click "Generate Token"
@@ -124,7 +118,6 @@ SNOWFLAKE_SCHEMA=PUBLIC
 ### 3. Verify Snowflake Access
 
 Ensure your Snowflake account has access to these Cortex models:
-
 - `claude-3-5-sonnet`
 - `llama4-maverick`
 - `mixtral-8x7b`
@@ -162,20 +155,20 @@ The application will open in your browser at `http://localhost:8501`
 
 ## Key Concepts Demonstrated
 
-| Concept                   | Description                                      |
-| ------------------------- | ------------------------------------------------ |
-| Multi-Model Orchestration | Different LLMs optimized for different tasks     |
-| Prompt Chaining           | Sequential agent execution with output passing   |
-| Feedback Loops            | Iterative improvement based on validation scores |
-| Agentic Patterns          | Autonomous task completion with self-correction  |
-| Structured Prompts        | Specific output formats for reliable parsing     |
+| Concept | Description |
+|---------|-------------|
+| Multi-Model Orchestration | Different LLMs optimized for different tasks |
+| Prompt Chaining | Sequential agent execution with output passing |
+| Feedback Loops | Iterative improvement based on validation scores |
+| Agentic Patterns | Autonomous task completion with self-correction |
+| Structured Prompts | Specific output formats for reliable parsing |
 
 ## Troubleshooting
 
-| Issue             | Solution                                                         |
-| ----------------- | ---------------------------------------------------------------- |
-| Connection failed | Verify `.env` credentials and account identifier format          |
-| Model not found   | Ensure your Snowflake account has Cortex model access            |
-| Timeout errors    | Check warehouse size and consider scaling up                     |
-| Stuck at score 8  | Increase max iterations; refinement prompt enforces improvements |
-| Empty responses   | Review prompt formatting and input length                        |
+| Issue | Solution |
+|-------|----------|
+| Connection failed | Verify `.env` credentials and account identifier format |
+| Model not found | Ensure your Snowflake account has Cortex model access |
+| Timeout errors | Check warehouse size and consider scaling up |
+| Stuck at score 8 | Increase max iterations; refinement prompt enforces improvements |
+| Empty responses | Review prompt formatting and input length |
