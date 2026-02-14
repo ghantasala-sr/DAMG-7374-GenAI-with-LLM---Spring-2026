@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: snowflake
+    database: dbt_tutorial
+    schema: raw
+    tables:
+      - name: customers
+      - name: orders
+      - name: payments

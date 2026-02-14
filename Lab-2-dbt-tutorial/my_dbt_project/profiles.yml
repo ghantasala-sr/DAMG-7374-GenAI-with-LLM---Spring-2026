@@ -1,0 +1,13 @@
+my_dbt_project:
+  outputs:
+    dev:
+      account: SFEDU02-PGB87192
+      database: DBT_TUTORIAL
+      password: "{{ env_var('SNOWFLAKE_PASSWORD') }}"
+      role: TRAINING_ROLE
+      schema: RAW
+      threads: 4
+      type: snowflake
+      user: INSTRUCTOR2
+      warehouse: LAB_WH
+  target: dev
