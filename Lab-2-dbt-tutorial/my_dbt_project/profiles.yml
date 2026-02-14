@@ -1,13 +1,13 @@
 my_dbt_project:
   outputs:
     dev:
-      account: SFEDU02-PGB87192
-      database: DBT_TUTORIAL
+      account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
+      database: "{{ env_var('SNOWFLAKE_DATABASE') }}"
       password: "{{ env_var('SNOWFLAKE_PASSWORD') }}"
-      role: TRAINING_ROLE
-      schema: RAW
+      role: "{{ env_var('SNOWFLAKE_ROLE') }}"
+      schema: "{{ env_var('SNOWFLAKE_SCHEMA') }}"
       threads: 4
       type: snowflake
-      user: INSTRUCTOR2
-      warehouse: LAB_WH
+      user: "{{ env_var('SNOWFLAKE_USER') }}"
+      warehouse: "{{ env_var('SNOWFLAKE_WAREHOUSE') }}"
   target: dev
