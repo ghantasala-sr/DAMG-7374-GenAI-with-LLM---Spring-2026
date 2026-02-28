@@ -1,0 +1,122 @@
+import streamlit as st
+import os
+from dotenv import load_dotenv
+
+# Import langchain-snowflake components
+from langchain_snowflake.agents import SnowflakeCortexAgent
+from utils.session import get_snowflake_session
+
+# Load environment variables
+load_dotenv()
+
+# Page config
+st.set_page_config(
+    page_title="Car Review Agent Demo",
+    page_icon="🤖",
+    layout="wide"
+)
+
+st.title("🚗 Car Review Agent (powered by Snowflake Cortex)")
+st.markdown("""
+This application connects directly to the **CAR_REVIEW_AGENT** hosted natively in Snowflake. 
+It uses the `langchain-snowflake` package to communicate securely with the agent, routing queries 
+to Cortex Search, Web Search, or Custom Python functions based on your instructions!
+""")
+
+# Initialize session and agent
+@st.cache_resource
+def initialize_system():
+    try:
+        session = get_snowflake_session()
+        
+        # Initialize the Cortex Agent using langchain-snowflake
+        agent = SnowflakeCortexAgent(
+            session=session,
+            database=os.getenv("SNOWFLAKE_DATABASE"),
+            schema=os.getenv("SNOWFLAKE_SCHEMA"),
+            name="CAR_REVIEW_AGENT" # Must match exactly the Name you defined in Snowsight
+        )
+        return agent
+    except Exception as e:
+        st.error(f"Failed to initialize Snowflake connection: {e}")
+        return None
+
+agent = initialize_system()
+
+# Initialize chat history in Streamlit session state
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+# Display chat history
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
+
+# Chat input block
+if prompt := st.chat_input("Ask about car reliability, pricing, or calculate a loan payment..."):
+    # 1. Display user prompt in UI
+    with st.chat_message("user"):
+        st.markdown(prompt)
+    
+    # 2. Add user prompt to message history
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    
+    # 3. Process prompt with Snowflake agent
+    with st.chat_message("assistant"):
+        if agent is None:
+            st.error("Agent is not connected. Please check your .env credentials.")
+        else:
+            with st.spinner("Agent is analyzing and executing tools..."):
+                try:
+                    # Run the agent! It will automatically know to use Cortex Search, Web Search, or your Custom Function.
+                    response = agent.invoke({"input": prompt})
+                    
+                    # Extract the final text answer from the API output
+                    # The SnowflakeCortexAgent often returns the entire trace as a literal string representation of a list
+                    final_answer = ""
+                    output_data = response.get("output", "")
+                    
+                    if isinstance(output_data, str):
+                        try:
+                            # Safely evaluate the string representation of the list/dict if it is one
+                            import ast
+                            parsed_output = ast.literal_eval(output_data)
+                            
+                            if isinstance(parsed_output, list):
+                                text_blocks = []
+                                for block in parsed_output:
+                                    if isinstance(block, dict) and block.get("type") == "text":
+                                        text_val = block.get("text", "")
+                                        if text_val:
+                                            text_blocks.append(text_val)
+                                if text_blocks:
+                                    final_answer = text_blocks[-1]
+                            elif isinstance(parsed_output, dict) and "text" in parsed_output:
+                                final_answer = parsed_output["text"]
+                            else:
+                                final_answer = output_data # Not a recognized parsed structure, fallback to raw
+                        except Exception:
+                            # If it's just a regular markdown string and not a literal list, it will fail parsing
+                            final_answer = output_data 
+                            
+                    elif isinstance(output_data, list):
+                         text_blocks = []
+                         for block in output_data:
+                             if isinstance(block, dict) and block.get("type") == "text":
+                                 text_val = block.get("text", "")
+                                 if text_val:
+                                     text_blocks.append(text_val)
+                         if text_blocks:
+                             final_answer = text_blocks[-1]
+
+                    if not final_answer:
+                        final_answer = "No text response generated by the agent."
+                    
+                    # Prevent KaTeX parsing errors in Streamlit by escaping dollar signs if they aren't meant to be math
+                    # Though ideally St.Markdown handles it, the raw string representation string breaks it.
+                    st.markdown(final_answer)
+                    
+                    # Save to chat history
+                    st.session_state.messages.append({"role": "assistant", "content": final_answer})
+                except Exception as e:
+                    st.error(f"Agent encountered an error: {e}")

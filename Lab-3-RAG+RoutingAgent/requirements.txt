@@ -1,0 +1,6 @@
+streamlit>=1.28.0
+snowflake-connector-python>=3.0.0
+snowflake-ml-python>=1.0.0
+python-dotenv>=1.0.0
+requests>=2.31.0
+googlemaps>=4.10.0
