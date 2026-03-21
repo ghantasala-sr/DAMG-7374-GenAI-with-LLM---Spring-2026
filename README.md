@@ -69,6 +69,21 @@ DAMG-7374-GenAI-with-LLM---Spring-2026/
 │   ├── requirements.txt
 │   └── README.md
 │
+├── Lab-5-MultiAgent/                   # Lab 5 – Multi-Agent Reflection Pipeline
+│   ├── config.py                       # Snowflake session & LLM initialization
+│   ├── schemas.py                      # Pydantic models and state definitions
+│   ├── nodes.py                        # Agent node functions
+│   ├── graph.py                        # LangGraph StateGraph assembly
+│   ├── main.py                         # CLI entry point
+│   ├── app.py                          # Streamlit frontend
+│   └── README.md
+│
+├── Lab-6-Memory/                       # Lab 6 – Memory Management with LLMs
+│   ├── app.py                          # Streamlit memory management app
+│   ├── cortex_code_app.py              # Cortex Code (CoCo) feature showcase
+│   ├── memory.ipynb                    # Memory concepts notebook
+│   └── CoCo Usage/                     # CoCo usage examples
+│
 └── README.md
 ```
 
@@ -82,6 +97,8 @@ DAMG-7374-GenAI-with-LLM---Spring-2026/
 | Lab 2 | dbt — Data Build Tool Tutorial | ✅ Available |
 | Lab 3 | RAG + Routing Agent with LLMs | ✅ Available |
 | Lab 4 | Parallelization with LLM Agents | ✅ Available |
+| Lab 5 | Multi-Agent Reflection Pipeline | ✅ Available |
+| Lab 6 | Memory Management with LLMs | ✅ Available |
 
 ---
 
@@ -92,6 +109,8 @@ DAMG-7374-GenAI-with-LLM---Spring-2026/
 - **Large Language Models (LLMs)** — Generative AI foundations
 - **RAG (Retrieval-Augmented Generation)** — Knowledge-grounded LLM pipelines
 - **LangChain / LangGraph** — LLM orchestration and routing agent framework
+- **Memory Management** — Short-term and long-term memory patterns for LLM agents
+- **Snowflake Cortex** — Snowflake-native LLM inference and AI features
 - **Python** — Scripting and data pipeline development
 - **SQL** — Database querying and stored procedures
 
