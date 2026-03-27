@@ -84,6 +84,18 @@ DAMG-7374-GenAI-with-LLM---Spring-2026/
 │   ├── memory.ipynb                    # Memory concepts notebook
 │   └── CoCo Usage/                     # CoCo usage examples
 │
+├── Lab-7-Evaluation-Observation/       # Lab 7 – Evaluation & Observation
+│   ├── config.py                       # Snowflake session & LLM initialization
+│   ├── schemas.py                      # Pydantic models and LangGraph state
+│   ├── guardrails.py                   # Input/output guardrail pipelines
+│   ├── nodes.py                        # Agent node functions
+│   ├── graph.py                        # LangGraph StateGraph assembly
+│   ├── evaluation.py                   # LLM-as-Judge, latency, token & trajectory tracking
+│   ├── main.py                         # CLI entry point
+│   ├── app.py                          # Streamlit frontend
+│   ├── requirements.txt
+│   └── .env.example
+│
 └── README.md
 ```
 
@@ -99,6 +111,7 @@ DAMG-7374-GenAI-with-LLM---Spring-2026/
 | Lab 4 | Parallelization with LLM Agents | ✅ Available |
 | Lab 5 | Multi-Agent Reflection Pipeline | ✅ Available |
 | Lab 6 | Memory Management with LLMs | ✅ Available |
+| Lab 7 | Evaluation & Observation with LLMs | ✅ Available |
 
 ---
 
@@ -111,6 +124,10 @@ DAMG-7374-GenAI-with-LLM---Spring-2026/
 - **LangChain / LangGraph** — LLM orchestration and routing agent framework
 - **Memory Management** — Short-term and long-term memory patterns for LLM agents
 - **Snowflake Cortex** — Snowflake-native LLM inference and AI features
+- **Guardrails** — Input/output safety pipelines (jailbreak detection, PII redaction, brand safety)
+- **LLM-as-Judge** — Automated response quality evaluation using LLMs
+- **TruLens** — Snowflake AI Observability for tracing and feedback scoring
+- **Trajectory Analysis** — Agent execution path validation and deviation detection
 - **Python** — Scripting and data pipeline development
 - **SQL** — Database querying and stored procedures
 
